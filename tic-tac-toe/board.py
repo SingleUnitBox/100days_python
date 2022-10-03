@@ -9,6 +9,15 @@ class Board:
         print(f" {self.board[6]} | {self.board[7]} | {self.board[8]}")
         print("---------------------")
 
+    def is_board_full(self):
+        list = []
+        for element in self.board:
+            if element != " ":
+                list.append(element)
+                if len(list) == 9:
+                    return True
+
+
     def clear_board(self):
         self.board = [f" " for x in range(9)]
 
@@ -18,9 +27,11 @@ class Board:
     def update_board(self, number, symbol):
             self.board[number] = symbol
 
-    def is_spot_empty(self, number):
+    def is_spot_empty(self, number, key=None):
         if self.board[number] != "x" and self.board[number] != "o":
             return True
+        elif key:
+            return False
         else:
             print("please choose another spot")
             return False
@@ -42,7 +53,9 @@ class Board:
             elif l[0] == l[1] == l[2] == "o":
                 print("O won")
                 return True
-
+        if self.is_board_full():
+            print("Draw")
+            return True
 
 
 
