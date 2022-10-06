@@ -32,29 +32,34 @@ user_param = {
 
 response = requests.post(url=post_endpoint, json=user_param, headers=headers)
 result = response.json()
-print(result)
-################################################################################
-today_date = datetime.now().strftime("%d/%m/%Y")
-now_time = datetime.now().strftime("%X")
 
-for exercise in result['exercises']:
-    sheet_input = {
-        "workout": {
-            "date": today_date,
-            "time": now_time,
-            "exercise": exercise['name'].title(),
-            "duration": exercise["duration_min"],
-            "calories": exercise['nf_calories'],
-        }
+################################################################################
+today = datetime.now()
+date = today.strftime("%d/%m/%Y")
+time = today.strftime("%H:%M:%S")
+
+exercise = result["exercises"][0]["name"].title()
+duration = result["exercises"][0]['duration_min']
+calories = result["exercises"][0]['nf_calories']
+print(calories)
+
+sheet_input = {
+    "workout": {
+    "date": date,
+    "time": time,
+    "exercise": exercise,
+    "duration": duration,
+    "calories": calories,
     }
+}
+
 
 header1 = {
     "Authorization": f"Bearer {os.environ['TOKEN']}"
+    # token wqewqewqewqewq
 }
 
 post_sheety_endpoint = "https://api.sheety.co/945910ca7ee851937e94aa321f5e90a0/myWorkouts/workouts"
 
 sheet_response = requests.post(url=post_sheety_endpoint, json=sheet_input, headers=header1)
-print(sheet_response.text)
-print(os.environ["APP_ID"])
-
+sheet_response.raise_for_status()
