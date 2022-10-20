@@ -24,5 +24,28 @@ driver.get("https://www.python.org/")
 # bug_link = driver.find_element(By.XPATH, '//*[@id="site-map"]/div[2]/div/ul/li[3]/a')
 # print(bug_link.text)
 
+events_dates = driver.find_elements(By.CSS_SELECTOR, ".event-widget time")
+events = driver.find_elements(By.CSS_SELECTOR, ".event-widget li a")
+events_dict = {}
+
+# for event in events_dates:
+#     print(event.text)
+#
+#
+# for e in events:
+#     print(e.text)
+
+for n in range(0, len(events_dates)):
+    events_dict[n] = {
+        "time": events_dates[n].text,
+        "name": events[n].text,
+    }
+
+print(events_dict)
+
+
+
+# //*[@id="content"]/div/section/div[3]/div[2]/div/ul/li[1]/a
+# //*[@id="content"]/div/section/div[3]/div[2]/div/ul/li[2]/a
 #driver.close()
 driver.quit()
