@@ -2,6 +2,7 @@ BACKGROUND_COLOR = "#B1DDC6"
 FONT = "Arial"
 current_card = {}
 to_learn = {}
+to_learn2 = {}
 
 from tkinter import *
 import pandas
