@@ -77,6 +77,33 @@ def create_new_post():
         return redirect(url_for("get_all_posts"))
     return render_template("make-post.html", form=form)
 
+@app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+def edit_post(post_id):
+    with app.app_context():
+        post = db.session.query(BlogPost).filter_by(id=post_id).first()
+        form = CreatePostForm(
+            title=post.title,
+            subtitle=post.subtitle,
+            img_url=post.img_url,
+            author=post.author,
+            body=post.body)
+        if form.validate_on_submit():
+            post.title = request.form["title"]
+            post.subtitle = request.form["subtitle"]
+            post.body = request.form["body"]
+            post.author = request.form["author"]
+            post.img_url = request.form["img_url"]
+            db.session.commit()
+            return redirect(url_for("show_post", post_id=post.id))
+    return render_template("make-post.html", form=form, is_edit=True)
+
+@app.route("/delete/<int:post_id>")
+def delete_post(post_id):
+    with app.app_context():
+        post = db.session.query(BlogPost).filter_by(id=post_id).first()
+        db.session.delete(post)
+        db.session.commit()
+    return redirect(url_for("get_all_posts"))
 
 @app.route("/about")
 def about():
@@ -88,5 +115,5 @@ def contact():
     return render_template("contact.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    #app.run(host='0.0.0.0', port=5000)
+    #app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
