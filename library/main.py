@@ -23,7 +23,7 @@ class Book(db.Model):
     author = db.Column(db.String(250), nullable=False)
     rating = db.Column(db.Float, nullable=False)
 
-### CREATE NEW DB only once needed at start###
+# CREATE NEW DB only once needed at start###
 # with app.app_context():
 #     db.create_all()
 
